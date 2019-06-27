@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  win: sandbox/windows-tools@dev:preview
+
+jobs:
+  build:
+    executor:
+      name: win/preview-default
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run:
+          name: "Install dotnet core" # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
+          command: .circleci/dotnet-install.ps1
+      - run:
+          name: "Run Build step"
+          # FIXME: Figure out how to run `dotnet build`; move the executable into the path; or, get chocolatey working.
+          command: C:\Users\circleci\AppData\Local\Microsoft\dotnet\dotnet.exe publish -c Release -r win10-x64
+      - run:
+          name: "Test the executable"
+          command: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe
+
+      # NOTE: Using chocolatey + caching would be ideal. Haven't figured it out yet though.
+      # Using choco I was able to install the sdk, but trying to run it from the hard path:
+      # C:\Users\circleci\AppData\Local\Temp\chocolatey\dotnetcore-sdk\2.2.300\dotnet-sdk-2.2.300-win-x64.exe
+      # Did not work; the step just hung.
+      #
+      # - run: choco install dotnetcore-sdk
+      # - run: refreshenv
+      # - run: dotnet --info
+      # - run: dotnet build
