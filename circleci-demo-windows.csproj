@@ -6,4 +6,8 @@
     <RootNamespace>circleci_demo_windows</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Colorful.Console" Version="1.2.9" />
+  </ItemGroup>
+
 </Project>
