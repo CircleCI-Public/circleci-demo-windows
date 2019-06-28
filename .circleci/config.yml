@@ -12,11 +12,11 @@ jobs:
       - checkout
       - run:
           name: "Install dotnet core" # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
-          command: .circleci/dotnet-install.ps1
+          command: .circleci/dotnet-install.ps1 -InstallDir C:\cli
       - run:
           name: "Run Build step"
           # FIXME: Figure out how to run `dotnet build`; move the executable into the path; or, get chocolatey working.
-          command: C:\Users\circleci\AppData\Local\Microsoft\dotnet\dotnet.exe publish -c Release -r win10-x64
+          command: C:\cli\dotnet.exe publish -c Release -r win10-x64
       - run:
           name: "Test the executable"
           command: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe
