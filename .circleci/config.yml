@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  win: sandbox/windows-tools@dev:preview
+  win: circleci/windows-tools@0.0.4
 
 jobs:
   build:
@@ -11,14 +11,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install dotnet core" # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
-          command: .circleci/dotnet-install.ps1 -InstallDir C:\cli
+          name: "Install dotnet core"
+          command: |
+            choco install dotnetcore-sdk
+            refreshenv
+            dotnet.exe --info
       - restore_cache:
           keys:
             - dotnet-packages-v1-{{ checksum "circleci-demo-windows.csproj" }}
       - run:
           name: "Install project dependencies"
-          command: C:\cli\dotnet.exe restore
+          command: dotnet.exe restore
       - save_cache:
           paths:
             - C:\Users\circleci\.nuget\packages
@@ -26,7 +29,7 @@ jobs:
 
       - run:
           name: "Run Build step"
-          command: C:\cli\dotnet.exe publish -c Release -r win10-x64 # FIXME: move dotnet to path
+          command: dotnet.exe publish -c Release -r win10-x64
       - run:
           name: "Test the executable"
           command: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe
