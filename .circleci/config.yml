@@ -21,10 +21,6 @@ jobs:
             - dotnet-packages-v1-{{ checksum "circleci-demo-windows.csproj" }}
       - run:
           command: python --version
-          shell: cmd.exe
-
-      - run:
-          command: python --version
           shell: powershell.exe
 
       - run:
