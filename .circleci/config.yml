@@ -19,8 +19,17 @@ jobs:
       - restore_cache:
           keys:
             - dotnet-packages-v1-{{ checksum "circleci-demo-windows.csproj" }}
-      - run: conda
+      - run:
+          command: python --version
+          shell: cmd.exe
 
+      - run:
+          command: python --version
+          shell: powershell.exe
+
+      - run:
+          command: python --version
+          shell: bash.exe
       - run:
           name: "Install project dependencies"
           command: dotnet.exe restore
