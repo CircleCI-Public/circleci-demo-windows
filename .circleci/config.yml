@@ -1,40 +1,20 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows-tools@0.0.4
+  win: circleci/windows@2.2.0
 
 jobs:
   build:
     executor:
-      name: win/preview-default
-      shell: powershell.exe
+      name: win/default
     steps:
-      - checkout
+      # default shell is Powershell
+      - run:            
+         command: $(echo hello | Out-Host; $?) -and $(echo world | Out-Host; $?)
+         shell: powershell.exe
       - run:
-          name: "Install dotnet core"
-          command: |
-            choco install dotnetcore-sdk
-            refreshenv
-            dotnet.exe --info
-      - restore_cache:
-          keys:
-            - dotnet-packages-v1-{{ checksum "circleci-demo-windows.csproj" }}
+         command: echo hello && echo world
+         shell: bash.exe
       - run:
-          command: python --version
-          shell: bash.exe
-      - run:
-          name: "Install project dependencies"
-          command: dotnet.exe restore
-      - save_cache:
-          paths:
-            - C:\Users\circleci\.nuget\packages
-          key: dotnet-packages-v1-{{ checksum "circleci-demo-windows.csproj" }}
-
-      - run:
-          name: "Run Build step"
-          command: dotnet.exe publish -c Release -r win10-x64
-      - run:
-          name: "Test the executable"
-          command: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe
-      - store_artifacts:
-          path: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe
+         command: echo hello & echo world
+         shell: cmd.exe
