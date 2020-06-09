@@ -26,6 +26,6 @@ jobs:
           command: dotnet.exe publish -c Release -r win10-x64
       - run:
           name: "Test the executable"
-          command: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe
+          command: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe 
       - store_artifacts:
           path: .\bin\Release\netcoreapp2.1\win10-x64\publish\circleci-demo-windows.exe 
